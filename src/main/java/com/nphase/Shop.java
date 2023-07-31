@@ -10,8 +10,8 @@ import java.util.ArrayList;
 
 public class Shop {
     public static void main(String[] args) {
-        Product tea = new Product("tea", new BigDecimal("5"), 1);
-        Product coffee = new Product("coffee", new BigDecimal("3.5"), 2);
+        Product tea = new Product("tea", new BigDecimal("5"), 5);
+        Product coffee = new Product("coffee", new BigDecimal("3.5"), 3);
 
         ArrayList<Product> productList = new ArrayList<>();
         productList.add(tea);
