@@ -9,8 +9,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ShoppingCartService {
-    private static final int BULK_DISCOUNT_QUANTITY = 3;
-    private static final BigDecimal BULK_DISCOUNT_PERCENTAGE = BigDecimal.valueOf(0.10);
+    private final int bulkDiscountQuantity;
+    private final BigDecimal bulkDiscountPercentage;
+
+    public ShoppingCartService(int bulkDiscountQuantity, BigDecimal bulkDiscountPercentage) {
+        this.bulkDiscountQuantity = bulkDiscountQuantity;
+        this.bulkDiscountPercentage = bulkDiscountPercentage;
+    }
 
     public BigDecimal calculateTotalPrice(ShoppingCart shoppingCart) {
         Map<String, Integer> categoryQuantities = new HashMap<>();
@@ -22,8 +27,10 @@ public class ShoppingCartService {
             int currentCategoryQuantity = categoryQuantities.getOrDefault(product.getCategory(), 0) + product.getQuantity();
             categoryQuantities.put(product.getCategory(), currentCategoryQuantity);
 
-            if (currentCategoryQuantity > BULK_DISCOUNT_QUANTITY) {
-                BigDecimal discountAmount = product.getPricePerUnit().multiply(BULK_DISCOUNT_PERCENTAGE).multiply(BigDecimal.valueOf(product.getQuantity()));
+            if (currentCategoryQuantity > bulkDiscountQuantity) {
+                BigDecimal discountAmount = product.getPricePerUnit()
+                        .multiply(bulkDiscountPercentage)
+                        .multiply(BigDecimal.valueOf(product.getQuantity()));
                 productTotalPrice = productTotalPrice.subtract(discountAmount);
             }
 

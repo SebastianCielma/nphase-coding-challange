@@ -11,18 +11,21 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 
 public class ShoppingCartServiceTest {
-    private final ShoppingCartService service = new ShoppingCartService();
 
     @Test
     public void calculatesPrice()  {
+        int bulkDiscountQuantity = 3;
+        BigDecimal bulkDiscountPercentage = BigDecimal.valueOf(0.10);
+
         ShoppingCart cart = new ShoppingCart(Arrays.asList(
-                new Product("Tea", BigDecimal.valueOf(5.0), 2),
-                new Product("Coffee", BigDecimal.valueOf(6.5), 1)
+                new Product("Tea", BigDecimal.valueOf(5.0), 2,"drinks"),
+                new Product("Coffee", BigDecimal.valueOf(6.5), 1,"drinks")
         ));
 
+        ShoppingCartService service = new ShoppingCartService(bulkDiscountQuantity, bulkDiscountPercentage);
         BigDecimal result = service.calculateTotalPrice(cart);
 
-        Assertions.assertEquals(result, BigDecimal.valueOf(16.5));
+        Assertions.assertEquals(result, BigDecimal.valueOf(11.5));
     }
 
 }

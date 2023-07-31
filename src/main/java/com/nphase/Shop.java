@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 public class Shop {
     public static void main(String[] args) {
-        // Create Product objects
         Product tea = new Product("tea", new BigDecimal("5.3"), 2, "drinks");
         Product coffee = new Product("coffee", new BigDecimal("3.5"), 2, "drinks");
         Product cheese = new Product("cheese", new BigDecimal("8"), 2, "food");
@@ -19,10 +18,19 @@ public class Shop {
         productList.add(tea);
         productList.add(coffee);
         productList.add(cheese);
+
         ShoppingCart shoppingCart = new ShoppingCart(productList);
 
-        ShoppingCartService shoppingCartService = new ShoppingCartService();
+        int bulkDiscountQuantity = 3;
+        BigDecimal bulkDiscountPercentage = BigDecimal.valueOf(0.10);
+
+
+        ShoppingCartService shoppingCartService = new ShoppingCartService(bulkDiscountQuantity, bulkDiscountPercentage);
+
+
         BigDecimal totalPrice = shoppingCartService.calculateTotalPrice(shoppingCart);
+
     }
 }
+
 
