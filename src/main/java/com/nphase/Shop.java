@@ -27,7 +27,6 @@ public class Shop {
 
         ShoppingCartService shoppingCartService = new ShoppingCartService(bulkDiscountQuantity, bulkDiscountPercentage);
 
-
         BigDecimal totalPrice = shoppingCartService.calculateTotalPrice(shoppingCart);
 
     }
