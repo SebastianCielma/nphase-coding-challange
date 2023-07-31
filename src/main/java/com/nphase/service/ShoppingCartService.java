@@ -5,25 +5,31 @@ import com.nphase.entity.ShoppingCart;
 
 import javax.naming.OperationNotSupportedException;
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ShoppingCartService {
     private static final int BULK_DISCOUNT_QUANTITY = 3;
     private static final BigDecimal BULK_DISCOUNT_PERCENTAGE = BigDecimal.valueOf(0.10);
 
     public BigDecimal calculateTotalPrice(ShoppingCart shoppingCart) {
-        return shoppingCart.getProducts().stream()
-                .map(this::calculateProductTotalPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
+        Map<String, Integer> categoryQuantities = new HashMap<>();
 
-    private BigDecimal calculateProductTotalPrice(Product product) {
-        BigDecimal productTotalPrice = product.getPricePerUnit().multiply(BigDecimal.valueOf(product.getQuantity()));
+        BigDecimal totalPrice = BigDecimal.ZERO;
+        for (Product product : shoppingCart.getProducts()) {
+            BigDecimal productTotalPrice = product.getPricePerUnit().multiply(BigDecimal.valueOf(product.getQuantity()));
 
-        if (product.getQuantity() > BULK_DISCOUNT_QUANTITY) {
-            BigDecimal discountAmount = product.getPricePerUnit().multiply(BULK_DISCOUNT_PERCENTAGE);
-            productTotalPrice = productTotalPrice.subtract(discountAmount);
+            int currentCategoryQuantity = categoryQuantities.getOrDefault(product.getCategory(), 0) + product.getQuantity();
+            categoryQuantities.put(product.getCategory(), currentCategoryQuantity);
+
+            if (currentCategoryQuantity > BULK_DISCOUNT_QUANTITY) {
+                BigDecimal discountAmount = product.getPricePerUnit().multiply(BULK_DISCOUNT_PERCENTAGE).multiply(BigDecimal.valueOf(product.getQuantity()));
+                productTotalPrice = productTotalPrice.subtract(discountAmount);
+            }
+
+            totalPrice = totalPrice.add(productTotalPrice);
         }
 
-        return productTotalPrice;
+        return totalPrice;
     }
 }

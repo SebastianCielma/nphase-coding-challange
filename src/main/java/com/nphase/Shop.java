@@ -10,18 +10,19 @@ import java.util.ArrayList;
 
 public class Shop {
     public static void main(String[] args) {
-        Product tea = new Product("tea", new BigDecimal("5"), 5);
-        Product coffee = new Product("coffee", new BigDecimal("3.5"), 3);
+        // Create Product objects
+        Product tea = new Product("tea", new BigDecimal("5.3"), 2, "drinks");
+        Product coffee = new Product("coffee", new BigDecimal("3.5"), 2, "drinks");
+        Product cheese = new Product("cheese", new BigDecimal("8"), 2, "food");
 
         ArrayList<Product> productList = new ArrayList<>();
         productList.add(tea);
         productList.add(coffee);
-
+        productList.add(cheese);
         ShoppingCart shoppingCart = new ShoppingCart(productList);
 
         ShoppingCartService shoppingCartService = new ShoppingCartService();
-
         BigDecimal totalPrice = shoppingCartService.calculateTotalPrice(shoppingCart);
-
     }
 }
+
